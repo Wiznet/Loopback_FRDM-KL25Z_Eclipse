@@ -9,7 +9,6 @@ best fits for low-end Non-OS devices connecting to Ethernet for the Internet of 
 Refer to http://www.youtube.com/watch?v=i77zoV5tnbE
 
 ## How to add a submodule of ioLibrary in project
-- Create src/ioLibrary path in project.
 - $ git submodule add git@github.com:Wiznet/ioLibrary_Driver.git project_src/ioLibrary
 - $ git commit -m "description"
 - $ git push
