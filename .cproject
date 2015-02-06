@@ -66,7 +66,7 @@
 									<listOptionValue builtIn="false" value="&quot;../system/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;../system/include/cmsis&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;../system/include/kl25-sc&quot;"/>
-									<listOptionValue builtIn="false" value="../src/Application"/>
+									<listOptionValue builtIn="false" value="../src/ioLibrary/Application/loopback"/>
 									<listOptionValue builtIn="false" value="../src/ioLibrary/Ethernet"/>
 									<listOptionValue builtIn="false" value="../src/ioLibrary/Ethernet/W5500"/>
 									<listOptionValue builtIn="false" value="../src/ioLibrary/Internet/DHCP"/>

@@ -58,10 +58,10 @@
 /////////////////////////////////////////
 // SOCKET NUMBER DEFINION for Examples //
 /////////////////////////////////////////
-#define SOCK_TCPS        0
-#define SOCK_UDPS        1
-#define SOCK_DNS		 6
-#define SOCK_HTTP		 7
+#define SOCK_TCPS       0
+#define SOCK_UDPS       1
+#define PORT_TCPS		5000
+#define PORT_UDPS       3000
 
 ////////////////////////////////////////////////
 // Shared Buffer Definition for LOOPBACK TEST //
@@ -79,6 +79,10 @@ wiz_NetInfo gWIZNETINFO = { .mac = {0x00, 0x08, 0xdc,0x00, 0xab, 0xcd},
                             .dns = {8,8,8,8},
                             .dhcp = NETINFO_STATIC };
 
+// For TCP client loopback examples; destination network info
+uint8_t destip[4] = {192, 168, 1, 248};
+uint16_t destport = 5000;
+
 //////////////////////////////////////////////////////////////////////////////////////////////
 // Call back function for W5500 SPI - Theses used as parameter of reg_wizchip_xxx_cbfunc()  //
 // Should be implemented by WIZCHIP users because host is dependent                         //
@@ -95,8 +99,7 @@ main(int argc, char* argv[])
 {
   //uint32_t seconds = 0;
   uint8_t tmp = 0;
-  uint8_t ret = 0;
-  uint8_t sn = 0;
+  //int32_t loopback_ret;
 
   uint8_t memsize[2][8] = {{2,2,2,2,2,2,2,2},{2,2,2,2,2,2,2,2}};
 
@@ -165,29 +168,15 @@ main(int argc, char* argv[])
       // Count seconds on the trace device.
       trace_printf("Second %u\n", seconds);
 #else
-#if LOOPBACK_MODE == LOOPBACK_NONBLOCK_API
-		//Accept for client
-		if((ret = loopback_tcps(sn, gDATABUF, 3000)) < 0)
+		/* Loopback Test: TCP Server and UDP */
+		// Test for Ethernet data transfer validation
 		{
-			printf("%d:loopback_tcps error:%ld\r\n",sn,ret);
-			break;
+			loopback_tcps(SOCK_TCPS, gDATABUF, PORT_TCPS);
+			loopback_udps(SOCK_UDPS, gDATABUF, PORT_UDPS);
+			//loopback_ret = loopback_tcpc(SOCK_TCPS, gDATABUF, destip, destport);
+
+			//if(loopback_ret < 0) trace_printf("loopback ret: %ld\r\n", loopback_ret); // TCP Socket Error code
 		}
-		if((ret = loopback_tcps(sn+1, gDATABUF, 3000 + 1)) < 0)
-		{
-			printf("%d:loopback_tcps error:%ld\r\n",sn+1,ret);
-			break;
-		}
-		if((ret = loopback_tcps(sn+2, gDATABUF, 3000 + 2)) < 0)
-		{
-			printf("%d:loopback_tcps error:%ld\r\n",sn+2,ret);
-			break;
-		}
-		if((ret=loopback_udps(sn+3,gDATABUF,10000)) < 0)
-		{
-			printf("%d:loopback_udps error:%ld\r\n",sn+1,ret);
-			break;
-		}
-#endif
 #endif
   }
   // Infinite loop, never return.
